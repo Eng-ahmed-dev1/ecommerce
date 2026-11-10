@@ -1,7 +1,19 @@
+import 'package:ecomerce_advanced/Screens/home_page.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+  }                        
+}
 
 void main() {
-  runApp(MyApp());
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -14,6 +26,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return SafeArea(
+      child: MaterialApp(debugShowCheckedModeBanner: false, home: HomePage()),
+    );
   }
 }
